@@ -4,7 +4,7 @@
 <mapper namespace="cn.edu.bupt.opensource.springboot.es.dao.SearchItemMapper" >
 
 
-	<resultMap type="com.taotao.springboot.search.domain.request;.SearchItem" id="searchItemResultMap">
+	<resultMap type="com.taotao.springboot.search.domain.request.SearchItem" id="searchItemResultMap">
 		<id column="id" property="id"/>
 		<result column="title" property="title"/>
 		<result column="sell_point" property="sellPoint"/>
