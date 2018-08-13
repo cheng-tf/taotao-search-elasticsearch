@@ -24,7 +24,7 @@ public class ESConfig {
     @Bean
     public TransportClient client() throws UnknownHostException {
         // 配置节点
-        InetSocketTransportAddress node = new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300);
+        InetSocketTransportAddress node = new InetSocketTransportAddress(InetAddress.getByName("47.106.221.183"), 9300);
         // 配置setting
         Settings settings = Settings.builder().put("cluster.name", "my-elasticsearch").build();
         TransportClient client = new PreBuiltTransportClient(settings);
