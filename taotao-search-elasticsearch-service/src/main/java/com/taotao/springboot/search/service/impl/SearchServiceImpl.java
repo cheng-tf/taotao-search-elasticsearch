@@ -151,12 +151,12 @@ public class SearchServiceImpl implements SearchService {
         }
         int from = (page - 1) * rows;
         // #2 构造查询
-        QueryBuilder qeryBuilder = QueryBuilders.termQuery("item_title", queryString);
+        QueryBuilder queryBuilder = QueryBuilders.termQuery("item_title", queryString);
         // #3 创建SearchRequestBuilder
         SearchRequestBuilder searchRequestBuilder = transportClient.prepareSearch("taotao")
                 //.setTypes("item")
                 //.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-                .setQuery(qeryBuilder)
+                .setQuery(queryBuilder)
                 .setFrom(from)
                 .setSize(rows);
         // #4 设置高亮显示
