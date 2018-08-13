@@ -10,11 +10,8 @@ import org.elasticsearch.common.xcontent.XContentFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Service;
 
-import javax.jms.Message;
-import javax.jms.TextMessage;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 
@@ -27,6 +24,7 @@ import java.text.SimpleDateFormat;
  * @version 1.0
  */
 @Service
+@RabbitListener(queues = "item-add.search")//基于RabbitMQ：使用RabbitListener配置监听的队列
 public class ItemAddConsumer {
 
     @Autowired
@@ -56,8 +54,6 @@ public class ItemAddConsumer {
         }
     }*/
 
-    // 基于RabbitMQ：使用RabbitListener配置监听的队列
-    @RabbitListener(queues = "item-add.search")
     @RabbitHandler
     public void consume2(String context) {
         try {
