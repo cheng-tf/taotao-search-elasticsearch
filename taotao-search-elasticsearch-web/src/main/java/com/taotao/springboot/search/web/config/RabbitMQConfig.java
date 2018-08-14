@@ -4,7 +4,6 @@ import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -22,8 +21,8 @@ public class RabbitMQConfig {
     // ---------------------------------Fanout 交换器-------------------------------------
     // 当消息到达时，Fanout交换器会将消息投递给所有附加到本身的队列
     @Bean
-    public Queue searchMessage() {
-        return new Queue("item-add.search");
+    public Queue elasticsearchMessage() {
+        return new Queue("item-add.elasticsearch");
     }
 
     @Bean
@@ -32,8 +31,8 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    Binding bindingExchangeC(Queue searchMessage, FanoutExchange itemAddExchange) {
-        return BindingBuilder.bind(searchMessage).to(itemAddExchange);
+    Binding bindingExchangeElasticsearch(Queue elasticsearchMessage, FanoutExchange itemAddExchange) {
+        return BindingBuilder.bind(elasticsearchMessage).to(itemAddExchange);
     }
 
 }

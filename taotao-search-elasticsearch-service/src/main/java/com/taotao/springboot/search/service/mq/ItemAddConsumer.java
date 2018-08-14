@@ -24,7 +24,7 @@ import java.text.SimpleDateFormat;
  * @version 1.0
  */
 @Service
-@RabbitListener(queues = "item-add.search")//基于RabbitMQ：使用RabbitListener配置监听的队列
+@RabbitListener(queues = "item-add.elasticsearch")//基于RabbitMQ：使用RabbitListener配置监听的队列
 public class ItemAddConsumer {
 
     @Autowired
