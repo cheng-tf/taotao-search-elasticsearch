@@ -7,6 +7,8 @@ import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,8 @@ import java.text.SimpleDateFormat;
 @Service
 @RabbitListener(queues = "item-add.elasticsearch")//基于RabbitMQ：使用RabbitListener配置监听的队列
 public class ItemAddConsumer {
+
+    private static final Logger log = LoggerFactory.getLogger(ItemAddConsumer.class);
 
     @Autowired
     private SearchItemMapper searchItemMapper;
@@ -57,10 +61,11 @@ public class ItemAddConsumer {
     @RabbitHandler
     public void consume2(String context) {
         try {
-            // 等待事务提交
-            Thread.sleep(1000);
-            // 根据ID查询商品信息
+            log.info("添加商品，同步商品索引库ES, itemId={}", context);
+            Thread.sleep(1000);//等待事务提交
+            // #1 根据ID查询商品信息
             SearchItem searchItem = searchItemMapper.getItemById(Long.parseLong(context));
+            // #2 同步商品索引库ES
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             XContentBuilder sourceBuilder = null;
             try {
@@ -75,15 +80,17 @@ public class ItemAddConsumer {
                         .field("item_category_name",searchItem.getCategoryName())
                         //.field("item_desc",searchItem.getItemDesc())
                         .endObject();
-            } catch (IOException e1) {
-                e1.printStackTrace();
+            } catch (IOException e) {
+                //e.printStackTrace();
+                log.error("添加商品，同步商品索引库ES, error={}", e);
             }
             IndexResponse response = transportClient.prepareIndex("taotao", "item", searchItem.getId())
                     .setSource(sourceBuilder)
                     .get();
-            System.out.println(response.status());
+            log.error("添加商品，同步商品索引库ES, status={}", response.status());
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            log.error("添加商品，同步商品索引库ES, error={}", e);
         }
     }
 
