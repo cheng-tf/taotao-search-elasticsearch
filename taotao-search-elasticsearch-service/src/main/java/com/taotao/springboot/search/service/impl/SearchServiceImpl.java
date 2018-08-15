@@ -142,7 +142,7 @@ public class SearchServiceImpl implements SearchService {
     // 方法2：使用ElasticSearch Java API 进行搜索
     @Override
     public SearchRes search2(String queryString, Integer page, Integer rows) {
-        // #0 设置分页信息
+        // #1 设置分页信息
         if (page == null || page < 1){
             page = 1;
         }

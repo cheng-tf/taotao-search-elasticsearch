@@ -35,9 +35,6 @@ public class ItemAddConsumer {
     private SearchItemMapper searchItemMapper;
 
     @Autowired
-    private SearchDao searchDao;
-
-    @Autowired
     private TransportClient transportClient;
 
     // 基于ActiveMQ：使用JmsListener配置监听的队列
@@ -81,15 +78,13 @@ public class ItemAddConsumer {
                         //.field("item_desc",searchItem.getItemDesc())
                         .endObject();
             } catch (IOException e) {
-                //e.printStackTrace();
                 log.error("添加商品，同步商品索引库ES, error={}", e);
             }
             IndexResponse response = transportClient.prepareIndex("taotao", "item", searchItem.getId())
                     .setSource(sourceBuilder)
                     .get();
-            log.error("添加商品，同步商品索引库ES, status={}", response.status());
+            log.info("添加商品，同步商品索引库ES, status={}", response.status());
         } catch (InterruptedException e) {
-            //e.printStackTrace();
             log.error("添加商品，同步商品索引库ES, error={}", e);
         }
     }
