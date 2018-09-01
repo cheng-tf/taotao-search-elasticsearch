@@ -7,33 +7,40 @@
     <!-- appender：写日志组件 -->
     <!-- ConsoleAppender：日志输出控制台 -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- 日志格式 -->
         <encoder charset="UTF-8">
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{80}[%L] - %msg%n</pattern>
         </encoder>
     </appender>
     <!-- RollingFileAppender：滚动日志记录文件 -->
+    <!-- 普通日志 -->
     <appender name="SYS_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${log.path}/system_info.log</file>
         <append>true</append>
+        <!-- 日志级别过滤器 -->
+        <!-- 过滤级别、匹配时操作：接收/记录、不匹配时操作：拒绝/不记录 -->
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>INFO</level>
             <onMatch>ACCEPT</onMatch>
             <onMismatch>DENY</onMismatch>
         </filter>
+        <!-- 循环策略：基于时间创建日志文件 -->
+        <!-- 日志命名：若单个文件大于100MB，则按照时间+自增i生成log文件 -->
+        <!-- 最长保存时间：100天-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${log.path}/system_info.%d{yyyy-MM-dd}.%i.log
             </fileNamePattern>
-            <timeBasedFileNamingAndTriggeringPolicy
-                class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>100MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
             <maxHistory>100</maxHistory>
         </rollingPolicy>
+        <!-- 日志格式 -->
         <encoder charset="UTF-8">
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{80}[%L] - %msg%n</pattern>
         </encoder>
     </appender>
-    <!-- RollingFileAppender：滚动日志记录文件 -->
+    <!-- 错误日志 -->
     <appender name="SYS_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${log.path}/system_error.log</file>
         <append>true</append>
@@ -55,7 +62,7 @@
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{80}[%L] - %msg%n</pattern>
         </encoder>
     </appender>
-    <!-- RollingFileAppender：滚动日志记录文件 -->
+    <!-- 普通日志 -->
     <appender name="APP_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${log.path}/app_info.log</file>
         <append>true</append>
@@ -77,7 +84,7 @@
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{80}[%L] - %msg%n</pattern>
         </encoder>
     </appender>
-    <!-- RollingFileAppender：滚动日志记录文件 -->
+    <!-- 错误日志 -->
     <appender name="APP_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${log.path}/app_error.log</file>
         <append>true</append>
